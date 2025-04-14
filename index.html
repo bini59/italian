@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="google-adsense-account" content="ca-pub-3404990406454167">
+    <meta name="google-adsense-account" content="ca-pub-3404990406454167" />
     <title>Italian Brainrot 캐릭터 이름 맞추기 테스트</title>
     <link
       href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
@@ -151,10 +151,82 @@
           transform: rotate(360deg);
         }
       }
+
+      .timer-display {
+        background: #000;
+        color: #ff0000;
+        font-family: "Courier New", monospace;
+        border: 2px inset #555;
+        padding: 5px 10px;
+        font-weight: bold;
+        font-size: 18px;
+        display: inline-block;
+        margin-top: 10px;
+        margin-bottom: 10px;
+      }
+
+      .time-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        background-color: #000040;
+      }
+
+      .time-table th,
+      .time-table td {
+        border: 2px solid #00ff00;
+        padding: 4px;
+        text-align: center;
+      }
+
+      .time-table th {
+        background-color: #000080;
+        color: #ffff00;
+      }
+
+      .time-table td {
+        color: #00ff00;
+      }
+
+      .total-time {
+        color: #ff00ff;
+        font-weight: bold;
+        font-size: 1.2em;
+      }
+
+      .language-selector {
+        background: #000080;
+        color: #ffff00;
+        border: 3px outset gold;
+        font-family: "Comic Sans MS", cursive, sans-serif;
+        font-weight: bold;
+        padding: 5px;
+        margin: 5px;
+        cursor: pointer;
+      }
+
+      .language-flag {
+        width: 24px;
+        height: 16px;
+        vertical-align: middle;
+        margin-right: 5px;
+        border: 1px solid #fff;
+      }
     </style>
   </head>
   <body class="m-0 p-0">
     <div class="container mx-auto p-4 mt-2">
+      <!-- Language Selector -->
+      <div class="text-center mb-4">
+        <select id="language-selector" class="language-selector text-lg">
+          <option value="ko">🇰🇷 한국어</option>
+          <option value="en">🇺🇸 English</option>
+          <option value="ja">🇯🇵 日本語</option>
+          <option value="zh">🇨🇳 简体中文</option>
+        </select>
+      </div>
+
       <!-- Header Section -->
       <header class="text-center mb-4">
         <table
@@ -177,8 +249,10 @@
               >
                 ITALIAN BRAINROT
               </h1>
-              <h2 class="text-2xl blink mb-1">캐릭터 이름 맞추기 테스트</h2>
-              <p class="text-lg">
+              <h2 class="text-2xl blink mb-1" id="page-subtitle">
+                캐릭터 이름 맞추기 테스트
+              </h2>
+              <p class="text-lg" id="page-description">
                 당신은 이탈리안 브레인로트 밈을 얼마나 알고 있나요?
               </p>
               <div class="mt-2">
@@ -204,7 +278,7 @@
       <div
         class="bg-white text-black p-2 mb-4 text-center border-2 border-red-500"
       >
-        <p class="blink text-red-500 font-bold">광고</p>
+        <p class="blink text-red-500 font-bold" id="ad-text">광고</p>
         <!-- Google AdSense Code Goes Here -->
         <div
           style="
@@ -215,23 +289,27 @@
             align-items: center;
           "
         >
-          <p>Google AdSense 광고 공간</p>
+          <p id="adsense-placeholder">Google AdSense 광고 공간</p>
         </div>
       </div>
 
       <!-- Visitor Counter -->
       <div class="text-center mb-4">
-        <p>방문자 수: <span class="visitor-counter">12345</span></p>
         <p>
-          최근 업데이트: <span style="color: #ff00ff">2025년 4월 14일</span>
+          <span id="visitor-text">방문자 수</span>:
+          <span class="visitor-counter">12345</span>
+        </p>
+        <p>
+          <span id="last-update-text">최근 업데이트</span>:
+          <span style="color: #ff00ff" id="update-date">2025년 4월 14일</span>
         </p>
       </div>
 
       <!-- Marquee -->
       <div class="marquee mb-4">
-        <p>
+        <p id="marquee-text">
           🔥🔥🔥 이탈리안 브레인로트 테스트에 오신 것을 환영합니다! 당신은
-          진정한 밈 마스터인가요? 이 테스트를 통해 확인해보세요! TRALALERO
+          진정한 밈 마스터인가요? 빠른 속도로 캐릭터를 맞춰보세요! TRALALERO
           TRALALA! BOMBARDIRO CROCODILO! 🔥🔥🔥
         </p>
       </div>
@@ -239,12 +317,18 @@
       <!-- Quiz Section -->
       <div id="quiz-container">
         <div class="card p-4 mb-4">
-          <h3 class="text-xl font-bold text-center mb-3">테스트 규칙</h3>
-          <ul class="list-disc pl-5">
+          <h3 class="text-xl font-bold text-center mb-3" id="rules-title">
+            테스트 규칙
+          </h3>
+          <ul class="list-disc pl-5" id="rules-list">
             <li>이탈리안 브레인로트 캐릭터 이미지가 표시됩니다.</li>
             <li>각 캐릭터의 정확한 이름을 선택하세요.</li>
             <li>총 10개의 문제가 있습니다.</li>
-            <li>테스트 완료 후 점수를 확인하고 SNS에 공유할 수 있습니다.</li>
+            <li><span class="blink">각 문제마다 시간이 측정됩니다!</span></li>
+            <li>
+              테스트 완료 후 점수와 소요 시간을 확인하고 SNS에 공유할 수
+              있습니다.
+            </li>
           </ul>
         </div>
 
@@ -261,6 +345,12 @@
           >
             문제 1/10
           </h3>
+
+          <!-- Timer Display -->
+          <div class="text-center mb-3">
+            <div class="timer-display" id="timer-display">00:00:00</div>
+          </div>
+
           <div class="text-center mb-4">
             <img
               id="character-image"
@@ -270,7 +360,7 @@
               style="max-width: 300px; max-height: 300px"
             />
           </div>
-          <h4 class="text-lg font-bold text-center mb-3">
+          <h4 class="text-lg font-bold text-center mb-3" id="question-text">
             이 캐릭터의 이름은 무엇일까요?
           </h4>
           <div id="options-container" class="mt-3">
@@ -281,9 +371,14 @@
 
       <!-- Results Section -->
       <div id="result-container" class="card p-4 mb-4 text-center">
-        <h3 class="text-xl font-bold mb-2 animated-background">테스트 결과</h3>
+        <h3
+          class="text-xl font-bold mb-2 animated-background"
+          id="result-title"
+        >
+          테스트 결과
+        </h3>
         <p class="text-lg mb-2">
-          당신의 점수:
+          <span id="your-score-text">당신의 점수</span>:
           <span id="score" class="text-2xl font-bold animated-background p-1"
             >0/10</span
           >
@@ -292,8 +387,35 @@
           당신은 이탈리안 브레인로트 초보자입니다!
         </p>
 
+        <!-- Total Time Display -->
+        <div class="mb-3">
+          <p>
+            <span id="total-time-text">총 소요 시간</span>:
+            <span id="total-time-display" class="total-time">00:00:00</span>
+          </p>
+        </div>
+
+        <!-- Time per Question Table -->
         <div class="mb-4">
-          <h4 class="font-bold mb-2 blink">결과 공유하기</h4>
+          <h4 class="font-bold mb-2 blink" id="time-per-question-title">
+            문제별 소요 시간
+          </h4>
+          <table class="time-table">
+            <thead>
+              <tr>
+                <th id="question-column">문제</th>
+                <th id="time-column">소요 시간</th>
+                <th id="correct-column">정답 여부</th>
+              </tr>
+            </thead>
+            <tbody id="time-log">
+              <!-- Time logs will be added here dynamically -->
+            </tbody>
+          </table>
+        </div>
+
+        <div class="mb-4">
+          <h4 class="font-bold mb-2 blink" id="share-title">결과 공유하기</h4>
           <table width="100%" border="1" cellpadding="4" cellspacing="2">
             <tr>
               <td align="center" bgcolor="#3b5998">
@@ -301,7 +423,8 @@
                   onclick="shareOnFacebook()"
                   class="retro-button bg-blue-600 text-white px-2 py-1"
                 >
-                  <i class="fab fa-facebook-f"></i> 페이스북
+                  <i class="fab fa-facebook-f"></i>
+                  <span id="facebook-text">페이스북</span>
                 </button>
               </td>
               <td align="center" bgcolor="#1da1f2">
@@ -309,7 +432,8 @@
                   onclick="shareOnTwitter()"
                   class="retro-button bg-blue-400 text-white px-2 py-1"
                 >
-                  <i class="fab fa-twitter"></i> 트위터
+                  <i class="fab fa-twitter"></i>
+                  <span id="twitter-text">트위터</span>
                 </button>
               </td>
               <td align="center" bgcolor="#c13584">
@@ -317,7 +441,8 @@
                   onclick="shareOnInstagram()"
                   class="retro-button bg-purple-600 text-white px-2 py-1"
                 >
-                  <i class="fab fa-instagram"></i> 인스타그램
+                  <i class="fab fa-instagram"></i>
+                  <span id="instagram-text">인스타그램</span>
                 </button>
               </td>
             </tr>
@@ -334,7 +459,7 @@
         <table width="100%" border="1" cellpadding="2" cellspacing="0">
           <tr bgcolor="#000040">
             <td align="center">
-              <p>최적화 브라우저:</p>
+              <p id="best-viewed-text">최적화 브라우저:</p>
               <img
                 src="https://cdn.jsdelivr.net/gh/cogdl/retro-assets@main/browsers/netscape.gif"
                 alt="Netscape"
@@ -359,7 +484,9 @@
         <table width="100%" border="1" cellpadding="4" cellspacing="0">
           <tr bgcolor="#000040">
             <td align="center">
-              <h3 class="text-xl font-bold mb-2">유용한 링크</h3>
+              <h3 class="text-xl font-bold mb-2" id="useful-links-title">
+                유용한 링크
+              </h3>
               <div class="flex justify-center space-x-4 flex-wrap">
                 <a
                   href="https://knowyourmeme.com/memes/italian-brainrot-ai-italian-animals"
@@ -389,7 +516,7 @@
       <div
         class="bg-white text-black p-2 mb-4 text-center border-2 border-red-500"
       >
-        <p class="blink text-red-500 font-bold">광고</p>
+        <p class="blink text-red-500 font-bold" id="ad-text-bottom">광고</p>
         <!-- Google AdSense Code Goes Here -->
         <div
           style="
@@ -400,17 +527,17 @@
             align-items: center;
           "
         >
-          <p>Google AdSense 광고 공간</p>
+          <p id="adsense-placeholder-bottom">Google AdSense 광고 공간</p>
         </div>
       </div>
 
       <!-- Footer -->
       <footer class="text-center mt-4">
-        <p class="text-sm">
+        <p class="text-sm" id="copyright-text">
           © 2025 Italian Brainrot Test | 이 사이트는 이탈리안 브레인로트 밈
           팬들을 위해 만들어졌습니다.
         </p>
-        <p class="text-xs mt-1 text-gray-400">
+        <p class="text-xs mt-1 text-gray-400" id="disclaimer-text">
           이 사이트는 1995년도에 만들어진 것처럼 보이지만 실제로는 2025년에
           만들어졌습니다.
         </p>
@@ -434,6 +561,220 @@
     </div>
 
     <script>
+      // Language translations
+      const translations = {
+        ko: {
+          pageTitle: "Italian Brainrot 캐릭터 이름 맞추기 테스트",
+          pageSubtitle: "캐릭터 이름 맞추기 테스트",
+          pageDescription:
+            "당신은 이탈리안 브레인로트 밈을 얼마나 알고 있나요?",
+          adText: "광고",
+          visitorText: "방문자 수",
+          lastUpdateText: "최근 업데이트",
+          updateDate: "2025년 4월 14일",
+          marqueeText:
+            "🔥🔥🔥 이탈리안 브레인로트 테스트에 오신 것을 환영합니다! 당신은 진정한 밈 마스터인가요? 빠른 속도로 캐릭터를 맞춰보세요! TRALALERO TRALALA! BOMBARDIRO CROCODILO! 🔥🔥🔥",
+          rulesTitle: "테스트 규칙",
+          rulesList: [
+            "이탈리안 브레인로트 캐릭터 이미지가 표시됩니다.",
+            "각 캐릭터의 정확한 이름을 선택하세요.",
+            "총 10개의 문제가 있습니다.",
+            '<span class="blink">각 문제마다 시간이 측정됩니다!</span>',
+            "테스트 완료 후 점수와 소요 시간을 확인하고 SNS에 공유할 수 있습니다.",
+          ],
+          startQuizButton: "테스트 시작하기",
+          questionNumber: "문제 CURRENT/TOTAL",
+          questionText: "이 캐릭터의 이름은 무엇일까요?",
+          resultTitle: "테스트 결과",
+          yourScoreText: "당신의 점수",
+          resultMessages: [
+            "당신은 이탈리안 브레인로트 초보자입니다! Tralalero Tralala도 모르시나요?",
+            "당신은 이탈리안 브레인로트 애호가입니다! Bombardiro Crocodilo를 더 공부하세요!",
+            "당신은 이탈리안 브레인로트 전문가입니다! Brr Brr Patapim!",
+            "당신은 이탈리안 브레인로트 마스터입니다! 완벽합니다!",
+          ],
+          totalTimeText: "총 소요 시간",
+          timePerQuestionTitle: "문제별 소요 시간",
+          questionColumn: "문제",
+          timeColumn: "소요 시간",
+          correctColumn: "정답 여부",
+          shareTitle: "결과 공유하기",
+          facebookText: "페이스북",
+          twitterText: "트위터",
+          instagramText: "인스타그램",
+          restartQuizButton: "다시 시작하기",
+          bestViewedText: "최적화 브라우저:",
+          usefulLinksTitle: "유용한 링크",
+          copyrightText:
+            "© 2025 Italian Brainrot Test | 이 사이트는 이탈리안 브레인로트 밈 팬들을 위해 만들어졌습니다.",
+          disclaimerText:
+            "이 사이트는 1995년도에 만들어진 것처럼 보이지만 실제로는 2025년에 만들어졌습니다.",
+          shareText:
+            "이탈리안 브레인로트 테스트에서 SCORE/TOTAL 점을 획득했습니다! 총 소요 시간: TIME! 당신도 도전해보세요!",
+          instagramAlert:
+            "인스타그램은 직접 공유 링크를 제공하지 않습니다. 테스트 결과 스크린샷(SCORE/TOTAL, 총 소요 시간: TIME)을 찍어서 인스타그램에 공유해주세요! Brr Brr Patapim!",
+          adsensePlaceholder: "Google AdSense 광고 공간",
+          totalTime: "총 시간",
+        },
+        en: {
+          pageTitle: "Italian Brainrot Character Name Quiz",
+          pageSubtitle: "Character Name Quiz",
+          pageDescription: "How well do you know Italian Brainrot memes?",
+          adText: "Advertisement",
+          visitorText: "Visitors",
+          lastUpdateText: "Last Update",
+          updateDate: "April 14, 2025",
+          marqueeText:
+            "🔥🔥🔥 Welcome to the Italian Brainrot Test! Are you a true meme master? Test your knowledge as fast as you can! TRALALERO TRALALA! BOMBARDIRO CROCODILO! 🔥🔥🔥",
+          rulesTitle: "Quiz Rules",
+          rulesList: [
+            "Italian Brainrot character images will be shown.",
+            "Select the correct name for each character.",
+            "There are 10 questions in total.",
+            '<span class="blink">Your time will be measured for each question!</span>',
+            "After completing the test, you can check your score and time, and share it on social media.",
+          ],
+          startQuizButton: "Start Quiz",
+          questionNumber: "Question CURRENT/TOTAL",
+          questionText: "What is the name of this character?",
+          resultTitle: "Quiz Results",
+          yourScoreText: "Your Score",
+          resultMessages: [
+            "You are an Italian Brainrot beginner! Don't you even know Tralalero Tralala?",
+            "You are an Italian Brainrot enthusiast! Study more about Bombardiro Crocodilo!",
+            "You are an Italian Brainrot expert! Brr Brr Patapim!",
+            "You are an Italian Brainrot master! Perfect!",
+          ],
+          totalTimeText: "Total Time",
+          timePerQuestionTitle: "Time Per Question",
+          questionColumn: "Question",
+          timeColumn: "Time",
+          correctColumn: "Correct",
+          shareTitle: "Share Results",
+          facebookText: "Facebook",
+          twitterText: "Twitter",
+          instagramText: "Instagram",
+          restartQuizButton: "Restart Quiz",
+          bestViewedText: "Best viewed with:",
+          usefulLinksTitle: "Useful Links",
+          copyrightText:
+            "© 2025 Italian Brainrot Test | This site was made for Italian Brainrot meme fans.",
+          disclaimerText:
+            "This site looks like it was made in 1995, but it was actually made in 2025.",
+          shareText:
+            "I scored SCORE/TOTAL on the Italian Brainrot Test! Total time: TIME! Can you beat me?",
+          instagramAlert:
+            "Instagram doesn't provide direct sharing links. Take a screenshot of your result (SCORE/TOTAL, Total time: TIME) and share it on Instagram! Brr Brr Patapim!",
+          adsensePlaceholder: "Google AdSense Ad Space",
+          totalTime: "Total Time",
+        },
+        ja: {
+          pageTitle: "イタリアン・ブレインロットキャラクター名クイズ",
+          pageSubtitle: "キャラクター名クイズ",
+          pageDescription:
+            "イタリアン・ブレインロットミームをどれだけ知っていますか？",
+          adText: "広告",
+          visitorText: "訪問者数",
+          lastUpdateText: "最終更新",
+          updateDate: "2025年4月14日",
+          marqueeText:
+            "🔥🔥🔥 イタリアン・ブレインロットテストへようこそ！あなたは真のミームマスターですか？できるだけ早くキャラクターを当ててください！TRALALERO TRALALA! BOMBARDIRO CROCODILO! 🔥🔥🔥",
+          rulesTitle: "テストルール",
+          rulesList: [
+            "イタリアン・ブレインロットのキャラクター画像が表示されます。",
+            "各キャラクターの正確な名前を選んでください。",
+            "全部で10問あります。",
+            '<span class="blink">各問題ごとに時間が測定されます！</span>',
+            "テスト完了後、スコアと所要時間を確認し、SNSで共有できます。",
+          ],
+          startQuizButton: "テスト開始",
+          questionNumber: "問題 CURRENT/TOTAL",
+          questionText: "このキャラクターの名前は何ですか？",
+          resultTitle: "テスト結果",
+          yourScoreText: "あなたのスコア",
+          resultMessages: [
+            "あなたはイタリアン・ブレインロット初心者です！Tralalero Tralalaも知らないのですか？",
+            "あなたはイタリアン・ブレインロット愛好家です！Bombardiro Crocodiloをもっと勉強してください！",
+            "あなたはイタリアン・ブレインロットの専門家です！Brr Brr Patapim!",
+            "あなたはイタリアン・ブレインロットのマスターです！完璧です！",
+          ],
+          totalTimeText: "合計所要時間",
+          timePerQuestionTitle: "問題別所要時間",
+          questionColumn: "問題",
+          timeColumn: "所要時間",
+          correctColumn: "正解",
+          shareTitle: "結果を共有",
+          facebookText: "Facebook",
+          twitterText: "Twitter",
+          instagramText: "Instagram",
+          restartQuizButton: "再スタート",
+          bestViewedText: "最適なブラウザ:",
+          usefulLinksTitle: "便利なリンク",
+          copyrightText:
+            "© 2025 イタリアン・ブレインロットテスト | このサイトはイタリアン・ブレインロットミームファンのために作られました。",
+          disclaimerText:
+            "このサイトは1995年に作られたように見えますが、実際には2025年に作られました。",
+          shareText:
+            "イタリアン・ブレインロットテストでSCORE/TOTAL点を獲得しました！合計所要時間：TIME！挑戦してみませんか？",
+          instagramAlert:
+            "Instagramは直接共有リンクを提供していません。テスト結果のスクリーンショット(SCORE/TOTAL、合計所要時間：TIME)を撮ってInstagramで共有してください！Brr Brr Patapim!",
+          adsensePlaceholder: "Google AdSense 広告スペース",
+          totalTime: "合計時間",
+        },
+        zh: {
+          pageTitle: "意大利脑腐角色名称测试",
+          pageSubtitle: "角色名称测试",
+          pageDescription: "你对意大利脑腐迷因了解多少？",
+          adText: "广告",
+          visitorText: "访问人数",
+          lastUpdateText: "最近更新",
+          updateDate: "2025年4月14日",
+          marqueeText:
+            "🔥🔥🔥 欢迎来到意大利脑腐测试！你是真正的迷因大师吗？快速猜出角色名称！TRALALERO TRALALA! BOMBARDIRO CROCODILO! 🔥🔥🔥",
+          rulesTitle: "测试规则",
+          rulesList: [
+            "将显示意大利脑腐角色图片。",
+            "选择每个角色的正确名称。",
+            "总共有10个问题。",
+            '<span class="blink">每个问题都会计时！</span>',
+            "测试完成后，可以查看得分和用时，并分享到社交媒体。",
+          ],
+          startQuizButton: "开始测试",
+          questionNumber: "问题 CURRENT/TOTAL",
+          questionText: "这个角色的名字是什么？",
+          resultTitle: "测试结果",
+          yourScoreText: "你的得分",
+          resultMessages: [
+            "你是意大利脑腐初学者！连Tralalero Tralala都不知道吗？",
+            "你是意大利脑腐爱好者！多学习一些关于Bombardiro Crocodilo的知识吧！",
+            "你是意大利脑腐专家！Brr Brr Patapim!",
+            "你是意大利脑腐大师！完美！",
+          ],
+          totalTimeText: "总用时",
+          timePerQuestionTitle: "各题用时",
+          questionColumn: "问题",
+          timeColumn: "用时",
+          correctColumn: "正确",
+          shareTitle: "分享结果",
+          facebookText: "Facebook",
+          twitterText: "Twitter",
+          instagramText: "Instagram",
+          restartQuizButton: "重新开始",
+          bestViewedText: "最佳浏览器:",
+          usefulLinksTitle: "有用链接",
+          copyrightText:
+            "© 2025 意大利脑腐测试 | 本网站为意大利脑腐迷因粉丝制作。",
+          disclaimerText:
+            "这个网站看起来像是1995年制作的，但实际上是2025年制作的。",
+          shareText:
+            "我在意大利脑腐测试中得了SCORE/TOTAL分！总用时：TIME！你也来挑战一下吧！",
+          instagramAlert:
+            "Instagram不提供直接分享链接。请截取测试结果截图(SCORE/TOTAL，总用时：TIME)并分享到Instagram！Brr Brr Patapim!",
+          adsensePlaceholder: "Google AdSense 广告空间",
+          totalTime: "总时间",
+        },
+      };
+
       // Quiz data with Italian Brainrot characters
       const quizData = [
         {
@@ -550,8 +891,16 @@
       let currentQuestion = 0;
       let score = 0;
       let userAnswers = [];
+      let currentLanguage = "ko"; // Default language
+
+      // Timer variables
+      let startTime = 0;
+      let timerInterval = null;
+      let questionTimes = [];
+      let totalTime = 0;
 
       // DOM elements
+      const languageSelector = document.getElementById("language-selector");
       const startQuizBtn = document.getElementById("start-quiz");
       const quizContainer = document.getElementById("quiz-container");
       const questionContainer = document.getElementById("question-container");
@@ -562,12 +911,148 @@
       const scoreElement = document.getElementById("score");
       const resultMessage = document.getElementById("result-message");
       const restartQuizBtn = document.getElementById("restart-quiz");
+      const timerDisplay = document.getElementById("timer-display");
+      const totalTimeDisplay = document.getElementById("total-time-display");
+      const timeLog = document.getElementById("time-log");
+
+      // Function to update all text content based on selected language
+      function updateLanguage(lang) {
+        currentLanguage = lang;
+        document.documentElement.lang = lang;
+
+        // Update page title
+        document.title = translations[lang].pageTitle;
+
+        // Update header texts
+        document.getElementById("page-subtitle").textContent =
+          translations[lang].pageSubtitle;
+        document.getElementById("page-description").textContent =
+          translations[lang].pageDescription;
+
+        // Update ad texts
+        document.getElementById("ad-text").textContent =
+          translations[lang].adText;
+        document.getElementById("ad-text-bottom").textContent =
+          translations[lang].adText;
+        document.getElementById("adsense-placeholder").textContent =
+          translations[lang].adsensePlaceholder;
+        document.getElementById("adsense-placeholder-bottom").textContent =
+          translations[lang].adsensePlaceholder;
+
+        // Update visitor section
+        document.getElementById("visitor-text").textContent =
+          translations[lang].visitorText;
+        document.getElementById("last-update-text").textContent =
+          translations[lang].lastUpdateText;
+        document.getElementById("update-date").textContent =
+          translations[lang].updateDate;
+
+        // Update marquee text
+        document.getElementById("marquee-text").textContent =
+          translations[lang].marqueeText;
+
+        // Update quiz rules
+        document.getElementById("rules-title").textContent =
+          translations[lang].rulesTitle;
+        const rulesList = document.getElementById("rules-list");
+        rulesList.innerHTML = "";
+        translations[lang].rulesList.forEach((rule) => {
+          const li = document.createElement("li");
+          li.innerHTML = rule;
+          rulesList.appendChild(li);
+        });
+
+        // Update buttons
+        startQuizBtn.textContent = translations[lang].startQuizButton;
+        restartQuizBtn.textContent = translations[lang].restartQuizButton;
+
+        // Update quiz elements
+        document.getElementById("question-text").textContent =
+          translations[lang].questionText;
+        updateQuestionNumber();
+
+        // Update result section
+        document.getElementById("result-title").textContent =
+          translations[lang].resultTitle;
+        document.getElementById("your-score-text").textContent =
+          translations[lang].yourScoreText;
+        document.getElementById("total-time-text").textContent =
+          translations[lang].totalTimeText;
+        document.getElementById("time-per-question-title").textContent =
+          translations[lang].timePerQuestionTitle;
+        document.getElementById("share-title").textContent =
+          translations[lang].shareTitle;
+
+        // Update table headers
+        document.getElementById("question-column").textContent =
+          translations[lang].questionColumn;
+        document.getElementById("time-column").textContent =
+          translations[lang].timeColumn;
+        document.getElementById("correct-column").textContent =
+          translations[lang].correctColumn;
+
+        // Update share buttons
+        document.getElementById("facebook-text").textContent =
+          translations[lang].facebookText;
+        document.getElementById("twitter-text").textContent =
+          translations[lang].twitterText;
+        document.getElementById("instagram-text").textContent =
+          translations[lang].instagramText;
+
+        // Update footer sections
+        document.getElementById("best-viewed-text").textContent =
+          translations[lang].bestViewedText;
+        document.getElementById("useful-links-title").textContent =
+          translations[lang].usefulLinksTitle;
+        document.getElementById("copyright-text").textContent =
+          translations[lang].copyrightText;
+        document.getElementById("disclaimer-text").textContent =
+          translations[lang].disclaimerText;
+
+        // Update result message if visible
+        if (score > 0) {
+          updateResultMessage();
+        }
+
+        // Save language preference
+        localStorage.setItem("brainrotLanguage", lang);
+      }
+
+      // Update question number text
+      function updateQuestionNumber() {
+        const template = translations[currentLanguage].questionNumber;
+        questionNumber.textContent = template
+          .replace("CURRENT", currentQuestion + 1)
+          .replace("TOTAL", quizData.length);
+      }
+
+      // Update result message based on score
+      function updateResultMessage() {
+        let messageIndex;
+        if (score <= 3) {
+          messageIndex = 0;
+        } else if (score <= 6) {
+          messageIndex = 1;
+        } else if (score <= 9) {
+          messageIndex = 2;
+        } else {
+          messageIndex = 3;
+        }
+        resultMessage.textContent =
+          translations[currentLanguage].resultMessages[messageIndex];
+      }
+
+      // Language selector event
+      languageSelector.addEventListener("change", function () {
+        updateLanguage(this.value);
+      });
 
       // Start quiz button event
       startQuizBtn.addEventListener("click", () => {
         startQuizBtn.classList.add("hidden");
         questionContainer.classList.remove("hidden");
         loadQuestion();
+        startTimer();
       });
 
       // Restart quiz button event
@@ -575,18 +1060,67 @@
         currentQuestion = 0;
         score = 0;
         userAnswers = [];
+        questionTimes = [];
+        totalTime = 0;
         resultContainer.style.display = "none";
         startQuizBtn.classList.remove("hidden");
         questionContainer.classList.add("hidden");
       });
 
+      // Timer functions
+      function startTimer() {
+        startTime = new Date().getTime();
+        timerInterval = setInterval(updateTimer, 10);
+      }
+
+      function updateTimer() {
+        const now = new Date().getTime();
+        const elapsed = now - startTime;
+
+        const hours = Math.floor(elapsed / (1000 * 60 * 60));
+        const minutes = Math.floor((elapsed % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((elapsed % (1000 * 60)) / 1000);
+        const milliseconds = Math.floor((elapsed % 1000) / 10);
+
+        timerDisplay.textContent = `${formatTime(hours)}:${formatTime(
+          minutes
+        )}:${formatTime(seconds)}.${formatTimeMs(milliseconds)}`;
+      }
+
+      function stopTimer() {
+        clearInterval(timerInterval);
+        const endTime = new Date().getTime();
+        const questionTime = endTime - startTime;
+        questionTimes.push(questionTime);
+        return questionTime;
+      }
+
+      function formatTime(time) {
+        return time < 10 ? `0${time}` : time;
+      }
+
+      function formatTimeMs(time) {
+        return time < 10 ? `0${time}` : time;
+      }
+
+      function formatTimeDisplay(milliseconds) {
+        const hours = Math.floor(milliseconds / (1000 * 60 * 60));
+        const minutes = Math.floor(
+          (milliseconds % (1000 * 60 * 60)) / (1000 * 60)
+        );
+        const seconds = Math.floor((milliseconds % (1000 * 60)) / 1000);
+        const ms = Math.floor((milliseconds % 1000) / 10);
+
+        return `${formatTime(hours)}:${formatTime(minutes)}:${formatTime(
+          seconds
+        )}.${formatTimeMs(ms)}`;
+      }
+
       // Load question function
       function loadQuestion() {
         if (currentQuestion < quizData.length) {
           const question = quizData[currentQuestion];
-          questionNumber.textContent = `문제 ${currentQuestion + 1}/${
-            quizData.length
-          }`;
+          updateQuestionNumber();
           characterImage.src = question.image;
 
           // Shuffle options
@@ -614,10 +1148,13 @@
       // Select answer function
       function selectAnswer(selectedOption) {
         const correctAnswer = quizData[currentQuestion].correctAnswer;
+        const questionTime = stopTimer();
+
         userAnswers.push({
           question: currentQuestion + 1,
           selected: selectedOption,
           correct: selectedOption === correctAnswer,
+          time: questionTime,
         });
 
         if (selectedOption === correctAnswer) {
@@ -625,7 +1162,13 @@
         }
 
         currentQuestion++;
-        loadQuestion();
+
+        if (currentQuestion < quizData.length) {
+          loadQuestion();
+          startTimer();
+        } else {
+          loadQuestion(); // This will trigger showResult()
+        }
       }
 
       // Show result function
@@ -634,49 +1177,85 @@
         resultContainer.style.display = "block";
         scoreElement.textContent = `${score}/${quizData.length}`;
 
+        // Calculate total time
+        totalTime = questionTimes.reduce((acc, time) => acc + time, 0);
+        totalTimeDisplay.textContent = formatTimeDisplay(totalTime);
+
         // Set result message based on score
-        if (score <= 3) {
-          resultMessage.textContent =
-            "당신은 이탈리안 브레인로트 초보자입니다! Tralalero Tralala도 모르시나요?";
-        } else if (score <= 6) {
-          resultMessage.textContent =
-            "당신은 이탈리안 브레인로트 애호가입니다! Bombardiro Crocodilo를 더 공부하세요!";
-        } else if (score <= 9) {
-          resultMessage.textContent =
-            "당신은 이탈리안 브레인로트 전문가입니다! Brr Brr Patapim!";
-        } else {
-          resultMessage.textContent =
-            "당신은 이탈리안 브레인로트 마스터입니다! 완벽합니다!";
-        }
+        updateResultMessage();
+
+        // Display time log
+        timeLog.innerHTML = "";
+        userAnswers.forEach((answer, index) => {
+          const row = document.createElement("tr");
+          const questionCell = document.createElement("td");
+          const timeCell = document.createElement("td");
+          const correctCell = document.createElement("td");
+
+          questionCell.textContent = `${answer.question}`;
+          timeCell.textContent = formatTimeDisplay(answer.time);
+          correctCell.innerHTML = answer.correct
+            ? '<span style="color: #00ff00;">✓</span>'
+            : '<span style="color: #ff0000;">✗</span>';
+
+          row.appendChild(questionCell);
+          row.appendChild(timeCell);
+          row.appendChild(correctCell);
+          timeLog.appendChild(row);
+        });
+
+        // Add total time row
+        const totalRow = document.createElement("tr");
+        const totalLabelCell = document.createElement("td");
+        const totalValueCell = document.createElement("td");
+        const emptyCell = document.createElement("td");
+
+        totalLabelCell.textContent = translations[currentLanguage].totalTime;
+        totalLabelCell.style.fontWeight = "bold";
+        totalValueCell.textContent = formatTimeDisplay(totalTime);
+        totalValueCell.style.fontWeight = "bold";
+
+        totalRow.appendChild(totalLabelCell);
+        totalRow.appendChild(totalValueCell);
+        totalRow.appendChild(emptyCell);
+        timeLog.appendChild(totalRow);
       }
 
       // Social media sharing functions
       function shareOnFacebook() {
-        const text = `이탈리안 브레인로트 테스트에서 ${score}/${quizData.length} 점을 획득했습니다! 당신도 도전해보세요! Tralalero Tralala!`;
+        const shareText = translations[currentLanguage].shareText
+          .replace("SCORE", score)
+          .replace("TOTAL", quizData.length)
+          .replace("TIME", formatTimeDisplay(totalTime));
         const url = encodeURIComponent(window.location.href);
         window.open(
           `https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${encodeURIComponent(
-            text
+            shareText
           )}`,
           "_blank"
         );
       }
 
       function shareOnTwitter() {
-        const text = `이탈리안 브레인로트 테스트에서 ${score}/${quizData.length} 점을 획득했습니다! 당신도 도전해보세요! Bombardiro Crocodilo!`;
+        const shareText = translations[currentLanguage].shareText
+          .replace("SCORE", score)
+          .replace("TOTAL", quizData.length)
+          .replace("TIME", formatTimeDisplay(totalTime));
         const url = encodeURIComponent(window.location.href);
         window.open(
           `https://twitter.com/intent/tweet?text=${encodeURIComponent(
-            text
+            shareText
           )}&url=${url}`,
           "_blank"
         );
       }
 
       function shareOnInstagram() {
-        alert(
-          "인스타그램은 직접 공유 링크를 제공하지 않습니다. 스크린샷을 찍어서 인스타그램에 공유해주세요! Brr Brr Patapim!"
-        );
+        const alertText = translations[currentLanguage].instagramAlert
+          .replace("SCORE", score)
+          .replace("TOTAL", quizData.length)
+          .replace("TIME", formatTimeDisplay(totalTime));
+        alert(alertText);
       }
 
       // Random visitor counter function
@@ -686,8 +1265,26 @@
         visitorCounter.textContent = randomVisitors.toString();
       }
 
-      // Update visitor counter on load
-      window.onload = updateVisitorCounter;
+      // Load saved language preference or detect from browser
+      function loadLanguagePreference() {
+        let lang = localStorage.getItem("brainrotLanguage");
+        if (!lang) {
+          const browserLang = navigator.language.split("-")[0];
+          if (translations[browserLang]) {
+            lang = browserLang;
+          } else {
+            lang = "en"; // Default to English if browser language not supported
+          }
+        }
+        languageSelector.value = lang;
+        updateLanguage(lang);
+      }
+
+      // Initialize on page load
+      window.onload = function () {
+        updateVisitorCounter();
+        loadLanguagePreference();
+      };
     </script>
   </body>
 </html>
