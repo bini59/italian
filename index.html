@@ -27,7 +27,7 @@
     ></script>
     <script>
       Kakao.init("4fb71fb29e6e5fcfab5d72c46b490be7"); // 여기에 발급받은 JavaScript 키를 입력하세요.
-      // console.log(Kakao.isInitialized());
+      console.log(Kakao.isInitialized());
     </script>
     <title>Italian Brainrot 캐릭터 이름 맞추기 테스트</title>
     <link
@@ -1265,7 +1265,7 @@
             ? quizData[0].image
             : "YOUR_DEFAULT_THUMBNAIL_URL"; // Provide a default image URL
 
-        alert(translations[currentLanguage].kakaoAlert);
+        // alert(translations[currentLanguage].kakaoAlert);
 
         /*
         // --- Kakao SDK Integration Required ----
@@ -1274,7 +1274,7 @@
         // 3. Uncomment and use the following code:
 */
         if (Kakao.isInitialized()) {
-          Kakao.Link.sendDefault({
+          Kakao.Share.sendDefault({
             objectType: "feed",
             content: {
               title: shareTitle,
