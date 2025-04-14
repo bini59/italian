@@ -295,10 +295,10 @@
 
       <!-- Visitor Counter -->
       <div class="text-center mb-4">
-        <!-- <p>
+        <p>
           <span id="visitor-text">방문자 수</span>:
           <span class="visitor-counter">12345</span>
-        </p> -->
+        </p>
         <p>
           <span id="last-update-text">최근 업데이트</span>:
           <span style="color: #ff00ff" id="update-date">2025년 4월 14일</span>
@@ -776,117 +776,7 @@
       };
 
       // Quiz data with Italian Brainrot characters
-      const quizData = [
-        {
-          image:
-            "https://i.namu.wiki/i/c3uoWXH_I4NkcyHD48-a73FeyLV0WZeF-w57Mb6-IDV5p5Ok2NKASxBUI3nE_UGYBeJWpY4ikRG6OuVi0YTJnQ.webp",
-          correctAnswer: "Tralalero Tralala",
-          options: [
-            "Tralalero Tralala",
-            "Bombardiro Crocodilo",
-            "Tripi Tropi",
-            "Tung Tung Tung Sahur",
-          ],
-        },
-        {
-          image:
-            "https://tiermaker.com/images/media/template_images/2024/1656085/all-italian-brainrot-animals-tiktok-meme-1656085/itabr8.png",
-          correctAnswer: "Bombardiro Crocodilo",
-          options: [
-            "Bombombini Gusini",
-            "Bombardiro Crocodilo",
-            "Brr Brr Patapim",
-            "Lirili Larila",
-          ],
-        },
-        {
-          image:
-            "https://tiermaker.com/images/media/template_images/2024/18003943/italian-brainrot-animals-18003943/images-25.png",
-          correctAnswer: "Tripi Tropi",
-          options: [
-            "Burbaloni Luliloli",
-            "Tripi Tropi",
-            "Tung Tung Tung Sahur",
-            "Tralalero Tralala",
-          ],
-        },
-        {
-          image:
-            "https://tiermaker.com/images/media/template_images/2024/1656085/all-italian-brainrot-animals-tiktok-meme-1656085/itabr31.png",
-          correctAnswer: "Brr Brr Patapim",
-          options: [
-            "Brr Brr Patapim",
-            "Bombombini Gusini",
-            "Gangsteri Footera",
-            "Tim Cheese",
-          ],
-        },
-        {
-          image:
-            "https://tiermaker.com/images/media/template_images/2024/1656085/all-italian-brainrot-animals-tiktok-meme-1656085/itabr11.png",
-          correctAnswer: "Bombombini Gusini",
-          options: [
-            "Bombardiro Crocodilo",
-            "Tracotocutulo Lirilì Larilà",
-            "Bombombini Gusini",
-            "Boneca Ambalabu",
-          ],
-        },
-        {
-          image: "https://i.ytimg.com/vi/_2SRnymes3M/maxresdefault.jpg",
-          correctAnswer: "Tung Tung Tung Sahur",
-          options: [
-            "Gangster Footera",
-            "Tung Tung Tung Sahur",
-            "Burbaloni Luliloli",
-            "Tripi Tropi",
-          ],
-        },
-        {
-          image:
-            "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Italian-brainrot-explainer.jpg/250px-Italian-brainrot-explainer.jpg",
-          correctAnswer: "Lirili Larila",
-          options: [
-            "Lirili Larila",
-            "Tralalero Tralala",
-            "Bombardiro Crocodilo",
-            "Brr Brr Patapim",
-          ],
-        },
-        {
-          image:
-            "https://tiermaker.com/images/media/template_images/2024/1656085/all-italian-brainrot-animals-tiktok-meme-1656085/itabr19.png",
-          correctAnswer: "Boneca Ambalabu",
-          options: [
-            "Tim Cheese",
-            "Boneca Ambalabu",
-            "Tung Tung Tung Sahur",
-            "Bombombini Gusini",
-          ],
-        },
-        {
-          image:
-            "https://tiermaker.com/images/media/template_images/2024/1656085/all-italian-brainrot-animals-tiktok-meme-1656085/itabr28.png",
-          correctAnswer: "Burbaloni Luliloli",
-          options: [
-            "Gangster Footera",
-            "Burbaloni Luliloli",
-            "Lirili Larila",
-            "Tripi Tropi",
-          ],
-        },
-        {
-          image:
-            "https://media.cybernews.com/images/featured/2025/03/italian-brainrot.jpg",
-          correctAnswer: "Gangster Footera",
-          options: [
-            "Boneca Ambalabu",
-            "Tralalero Tralala",
-            "Gangster Footera",
-            "Brr Brr Patapim",
-          ],
-        },
-      ];
+      let quizData = []; // Initialize as empty array
 
       let currentQuestion = 0;
       let score = 0;
@@ -1021,9 +911,11 @@
       // Update question number text
       function updateQuestionNumber() {
         const template = translations[currentLanguage].questionNumber;
+        // Make sure quizData is loaded before accessing its length
+        const totalQuestions = quizData ? quizData.length : 0;
         questionNumber.textContent = template
           .replace("CURRENT", currentQuestion + 1)
-          .replace("TOTAL", quizData.length);
+          .replace("TOTAL", totalQuestions);
       }
 
       // Update result message based on score
@@ -1049,10 +941,23 @@
 
       // Start quiz button event
       startQuizBtn.addEventListener("click", () => {
-        startQuizBtn.classList.add("hidden");
-        questionContainer.classList.remove("hidden");
-        loadQuestion();
-        startTimer();
+        // Ensure quizData is loaded before starting
+        if (quizData.length > 0) {
+          startQuizBtn.classList.add("hidden");
+          questionContainer.classList.remove("hidden");
+          // Reset quiz state before loading question
+          currentQuestion = 0;
+          score = 0;
+          userAnswers = [];
+          questionTimes = [];
+          totalTime = 0;
+          loadQuestion();
+          startTimer();
+        } else {
+          // Optionally show a message or disable the button until loaded
+          console.log("Quiz data is still loading...");
+          // You could add a visual indicator here
+        }
       });
 
       // Restart quiz button event
@@ -1280,10 +1185,89 @@
         updateLanguage(lang);
       }
 
+      // Function to fetch and process quiz data
+      async function loadQuizData() {
+        try {
+          const response = await fetch("creature.json");
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const creatures = await response.json();
+
+          // Shuffle creatures to randomize question order later if needed
+          const shuffledCreatures = [...creatures].sort(
+            () => Math.random() - 0.5
+          );
+
+          // Select only the first 10 creatures for the quiz
+          const quizCreatures = shuffledCreatures.slice(0, 10);
+
+          quizData = quizCreatures.map((creature, index, allCreatures) => {
+            const correctAnswer = creature.name;
+            let options = [correctAnswer];
+
+            // Get all other names *from the original full list* to ensure enough options
+            const otherNames = creatures
+              .map((c) => c.name)
+              .filter((name) => name !== correctAnswer);
+
+            // Shuffle other names
+            otherNames.sort(() => Math.random() - 0.5);
+
+            // Add 3 unique incorrect options
+            for (let i = 0; i < 3 && i < otherNames.length; i++) {
+              options.push(otherNames[i]);
+            }
+
+            // Ensure we always have 4 options if possible, even if duplicates from original list needed (unlikely with enough data)
+            while (
+              options.length < 4 &&
+              otherNames.length > options.length - 1
+            ) {
+              // This part is tricky, ideally creature.json has enough unique names > 4
+              // If not, we might need to allow duplicates or handle differently.
+              // For now, let's assume enough unique names exist or the loop finishes.
+              // A robust solution might involve grabbing *any* other name if unique pool exhausted.
+              const nextAvailableOption = otherNames.find(
+                (name) => !options.includes(name)
+              );
+              if (nextAvailableOption) options.push(nextAvailableOption);
+              else break; // Prevent infinite loop if not enough unique names
+            }
+            // Ensure options are exactly 4 items by padding if necessary (edge case)
+            while (options.length < 4) {
+              // Add a placeholder or duplicate if absolutely necessary
+              options.push(otherNames[0] || "Option Placeholder"); // Needs a fallback
+            }
+
+            return {
+              image: creature.image,
+              correctAnswer: correctAnswer,
+              options: options, // Options will be shuffled again in loadQuestion
+            };
+          });
+
+          console.log("Quiz data loaded:", quizData);
+          // Optionally re-enable start button if it was disabled
+          // REMOVE: startQuizBtn.disabled = false;
+          // REMOVE: startQuizBtn.textContent = translations[currentLanguage].startQuizButton; // Reset button text
+        } catch (error) {
+          console.error("Failed to load quiz data:", error);
+          // Display an error message to the user
+          quizContainer.innerHTML =
+            '<p style="color: red; text-align: center;">퀴즈 데이터를 로드하는 데 실패했습니다. 페이지를 새로고침하거나 나중에 다시 시도해주세요.</p>';
+        }
+      }
+
       // Initialize on page load
       window.onload = function () {
+        // Disable start button until data is loaded
+        // REMOVE: startQuizBtn.disabled = true;
+        // REMOVE: startQuizBtn.textContent = "로딩 중..."; // Indicate loading
+
         updateVisitorCounter();
-        loadLanguagePreference();
+        loadLanguagePreference(); // This might update button text, so load data after
+        loadQuizData(); // Fetch data after setting language
       };
     </script>
   </body>
