@@ -342,10 +342,6 @@
       <!-- Visitor Counter -->
       <div class="text-center mb-4">
         <p>
-          <span id="visitor-text">방문자 수</span>:
-          <span class="visitor-counter">12345</span>
-        </p>
-        <p>
           <span id="last-update-text">최근 업데이트</span>:
           <span style="color: #ff00ff" id="update-date">2025년 4월 14일</span>
         </p>
@@ -946,8 +942,6 @@
         //   translations[lang].adsensePlaceholder;
 
         // Update visitor section
-        document.getElementById("visitor-text").textContent =
-          translations[lang].visitorText;
         document.getElementById("last-update-text").textContent =
           translations[lang].lastUpdateText;
         document.getElementById("update-date").textContent =
@@ -1351,12 +1345,6 @@
           });
       }
 
-      // Random visitor counter function
-      function updateVisitorCounter() {
-        const visitorCounter = document.querySelector(".visitor-counter");
-        const randomVisitors = Math.floor(Math.random() * 10000) + 5000;
-        visitorCounter.textContent = randomVisitors.toString();
-      }
 
       // Load saved language preference or detect from browser
       function loadLanguagePreference() {
@@ -1452,8 +1440,6 @@
         // Disable start button until data is loaded
         // REMOVE: startQuizBtn.disabled = true;
         // REMOVE: startQuizBtn.textContent = "로딩 중..."; // Indicate loading
-
-        updateVisitorCounter();
         loadLanguagePreference(); // This might update button text, so load data after
         loadQuizData(); // Fetch data after setting language
       };
